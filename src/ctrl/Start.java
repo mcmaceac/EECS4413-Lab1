@@ -31,14 +31,31 @@ public class Start extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		//OSAP parameters
+		double principal, period, interest;
+		
+		//initialize the parameters to their default values from the context-params
+		principal = Double.parseDouble(getServletContext().getInitParameter("principal"));
+		period = Double.parseDouble(getServletContext().getInitParameter("period"));
+		interest = Double.parseDouble(getServletContext().getInitParameter("interest"));
+		
+		principal = (request.getParameter("principal") == null) ? principal : Double.parseDouble(request.getParameter("principal"));
+		period = (request.getParameter("period") == null) ? period : Double.parseDouble(request.getParameter("period"));
+		interest = (request.getParameter("interest") == null) ? interest : Double.parseDouble(request.getParameter("interest"));
+
+		
+		
 		PrintWriter p = response.getWriter();
-		p.append("Hello, World!");
+		
+		p.append("Principal: ").append(request.getParameter("principal"));
+		p.append("\nHello, World!");
 		p.append("\nServed at: ").append(request.getContextPath());
 		p.append("\nClient IP: ").append(request.getRemoteAddr());
 		p.append("\nProtocol: ").append(request.getProtocol());
 		p.append("\nMethod: ").append(request.getMethod());
 		
-		p.append("\nParameter: ").append(request.getParameter("param1"));
+		p.append("\nQuery String: ").append(request.getQueryString());
+		p.append("\nQuery Param foo=").append(request.getParameter("foo"));
 		p.append("\nURI: ").append(request.getRequestURI());
 		p.append("\nContext: ").append(request.getContextPath());
 		p.append("\nServlet path: ").append(request.getServletPath());
@@ -49,6 +66,13 @@ public class Start extends HttpServlet {
 		
 		p.append("\nContext arg: ").append(this.getServletContext().getInitParameter("Param1"));
 	
+		p.append("\n---- Monthly Payments ----");
+		p.append("\nBased on Principal=" + principal + " Period=" + period + 
+				" Interest=" + interest);
+		
+		double i = Math.pow(1+(interest/12.0), period * -1);
+		double monthlyPayments = (interest/12.0) * principal / (1.0 - i);
+		p.append("\nMonthly payments: " + monthlyPayments);
 		//The below code is to generate an exception to test the exception page
 		//int[] ex = {1, 2, 3};
 		//int genException = ex[5];

@@ -11,8 +11,16 @@
     <welcome-file>Start.java</welcome-file>
   </welcome-file-list>
   <context-param>
-  	<param-name>Param1</param-name>
-  	<param-value>TestParam1</param-value>
+  	<param-name>principal</param-name>
+  	<param-value>25500</param-value>
+  </context-param>
+  <context-param>
+    	<param-name>period</param-name>
+  	<param-value>48</param-value>	
+  </context-param>
+  <context-param>
+    	<param-name>interest</param-name>
+  	<param-value>6</param-value>
   </context-param>
   <error-page>
   	<error-code>404</error-code>
