@@ -72,8 +72,10 @@ public class Start extends HttpServlet {
 				" Interest=" + interest);
 		
 		double monthlyInt = (interest / 12.0) * .01;
-		double monthlyPayments = principal * Math.pow(1+monthlyInt, period) * (monthlyInt)
-				/ (Math.pow(1+monthlyInt, period) - 1);
+		//double monthlyPayments = principal * Math.pow(1+monthlyInt, period) * (monthlyInt)
+		//		/ (Math.pow(1+monthlyInt, period) - 1);
+		
+		double monthlyPayments = monthlyInt * principal / (1 - Math.pow(1+monthlyInt, -period));
 		
 		DecimalFormat d = new DecimalFormat("##.0");
 		p.append("\nMonthly payments: " + d.format(monthlyPayments));
