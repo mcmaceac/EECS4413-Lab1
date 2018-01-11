@@ -48,6 +48,10 @@ public class Start extends HttpServlet {
 		}
 		
 		p.append("\nContext arg: ").append(this.getServletContext().getInitParameter("Param1"));
+	
+		//The below code is to generate an exception to test the exception page
+		//int[] ex = {1, 2, 3};
+		//int genException = ex[5];
 	}
 
 	/**
