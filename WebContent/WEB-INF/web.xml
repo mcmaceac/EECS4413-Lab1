@@ -14,4 +14,12 @@
   	<param-name>Param1</param-name>
   	<param-value>TestParam1</param-value>
   </context-param>
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/res/my404.jspx</location>
+  </error-page>
+  <error-page>
+  	<exception-type>java.lang.Exception</exception-type>
+  	<location>/res/myException.jspx</location>
+  </error-page>
 </web-app>
