@@ -2,6 +2,7 @@ package ctrl;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -70,9 +71,12 @@ public class Start extends HttpServlet {
 		p.append("\nBased on Principal=" + principal + " Period=" + period + 
 				" Interest=" + interest);
 		
-		double i = Math.pow(1+(interest/12.0), period * -1);
-		double monthlyPayments = (interest/12.0) * principal / (1.0 - i);
-		p.append("\nMonthly payments: " + monthlyPayments);
+		double monthlyInt = (interest / 12.0) * .01;
+		double monthlyPayments = principal * Math.pow(1+monthlyInt, period) * (monthlyInt)
+				/ (Math.pow(1+monthlyInt, period) - 1);
+		
+		DecimalFormat d = new DecimalFormat("##.0");
+		p.append("\nMonthly payments: " + d.format(monthlyPayments));
 		//The below code is to generate an exception to test the exception page
 		//int[] ex = {1, 2, 3};
 		//int genException = ex[5];
