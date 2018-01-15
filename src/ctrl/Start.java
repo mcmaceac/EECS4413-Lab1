@@ -68,6 +68,12 @@ public class Start extends HttpServlet {
 		//p.append("\nServed at: ").append(request.getContextPath());
 		p.append("\nClient IP: ").append(request.getRemoteAddr());
 		p.append("\nClient Port: ").append("" + request.getRemotePort());
+		
+		//this is where you could filter ips 
+		//if (request.getRemoteAddr() == someAddress) {
+		//	abort();
+		//}
+		p.append("\nThis IP has been flagged!");
 		p.append("\nClient Protocol: ").append(request.getProtocol());
 		p.append("\nClient Method: ").append(request.getMethod());
 		
