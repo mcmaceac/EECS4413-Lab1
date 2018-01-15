@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet({"/Start", "/Startup", "/Startup/*"})
 public class Start extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	//below variables are used so the client can recalculate payments with differing interest rates
+	private double savedPrincipal, savedPeriod;
+	
+	private boolean varsInitialized = false;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -32,41 +37,52 @@ public class Start extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		//System.out.println("doGet called!");
 		//OSAP parameters
 		double principal, period, interest;
 		
 		//initialize the parameters to their default values from the context-params
-		principal = Double.parseDouble(getServletContext().getInitParameter("principal"));
-		period = Double.parseDouble(getServletContext().getInitParameter("period"));
+		if (varsInitialized) {
+			principal = savedPrincipal;
+			period = savedPeriod;
+		}
+		else {
+			principal = Double.parseDouble(getServletContext().getInitParameter("principal"));
+			period = Double.parseDouble(getServletContext().getInitParameter("period"));
+		}
 		interest = Double.parseDouble(getServletContext().getInitParameter("interest"));
+		
+		varsInitialized = true;
 		
 		principal = (request.getParameter("principal") == null) ? principal : Double.parseDouble(request.getParameter("principal"));
 		period = (request.getParameter("period") == null) ? period : Double.parseDouble(request.getParameter("period"));
 		interest = (request.getParameter("interest") == null) ? interest : Double.parseDouble(request.getParameter("interest"));
 
-		
+		savedPrincipal = principal;
+		savedPeriod = period;
 		
 		PrintWriter p = response.getWriter();
 		
-		p.append("Principal: ").append(request.getParameter("principal"));
+		//p.append("Principal: ").append(request.getParameter("principal"));
 		p.append("\nHello, World!");
-		p.append("\nServed at: ").append(request.getContextPath());
+		//p.append("\nServed at: ").append(request.getContextPath());
 		p.append("\nClient IP: ").append(request.getRemoteAddr());
-		p.append("\nProtocol: ").append(request.getProtocol());
-		p.append("\nMethod: ").append(request.getMethod());
+		p.append("\nClient Port: ").append("" + request.getRemotePort());
+		p.append("\nClient Protocol: ").append(request.getProtocol());
+		p.append("\nClient Method: ").append(request.getMethod());
 		
 		p.append("\nQuery String: ").append(request.getQueryString());
 		p.append("\nQuery Param foo=").append(request.getParameter("foo"));
-		p.append("\nURI: ").append(request.getRequestURI());
-		p.append("\nContext: ").append(request.getContextPath());
-		p.append("\nServlet path: ").append(request.getServletPath());
+		p.append("\nRequest URI : ").append(request.getRequestURI());
+		//p.append("\nContext: ").append(request.getContextPath());
+		p.append("\nRequest Servlet path : ").append(this.getServletContext().getContextPath());
 		
 		if (request.getRequestURI().contains("/Startup/YorkBank")) {
 			response.sendRedirect(this.getServletContext().getContextPath() + "/Start");
 		}
 		
-		p.append("\nContext arg: ").append(this.getServletContext().getInitParameter("Param1"));
-	
+		//p.append("\nContext arg: ").append(this.getServletContext().getInitParameter("Param1"));
+		
 		p.append("\n---- Monthly Payments ----");
 		p.append("\nBased on Principal=" + principal + " Period=" + period + 
 				" Interest=" + interest);
